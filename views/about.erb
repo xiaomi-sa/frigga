@@ -1,0 +1,25 @@
+<h3>Frigga  版本: <%= @ver %></h3>
+<table class="table table-bordered table-hover table-condensed">
+<!--   <thead> -->
+    <tr class="info">
+      <td><strong>Process</strong></td>
+      <td><strong>Status</strong></td>
+      <td><strong>Start Time</strong></td>
+    </tr>
+<!--   </thead>
+  <tbody> -->
+    <tr>
+    <td>
+      <a href="#" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="<%= @process['frigga'][:start] %>">Frigga</a>
+    </td>
+    <td>
+      <% if @process['frigga'][:status] == 'running' %>
+        <span class="label label-info"><%= @process['frigga'][:status] %></span></td>
+      <% else %>
+        <span class="label label-warning"><%= @process['frigga'][:status] %></span></td>
+      <% end %>
+    <td><%= @process['frigga'][:start_time] %></td>
+    <tr>
+
+<!--   </tbody> -->
+</table>

@@ -1,0 +1,41 @@
+
+<div class="alert alert-info">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+  <strong>注意:</strong> 点击stop按钮停止tail log，继续tail log请刷新本页面
+</div>
+<pre>
+<div id="msgs" style="height:700px;overflow-y:auto;overflow-x:hidden;"></div>
+</pre>
+<form id="form" class="pull-right">
+ <input type="text" id="input" value="END" style="display:none;"></input>
+ <input type="submit" name="submit" class="btn btn-info" value="stop"></input>
+</form>   
+
+<script type="text/javascript">
+  window.onload = function(){
+    (function(){
+      var show = function(el){
+        return function(msg){ 
+          el.innerHTML = el.innerHTML  + msg; 
+          el.scrollTop = 0;
+          el.scrollTop = el.scrollHeight;
+        }
+      }(document.getElementById('msgs'));
+
+      var ws       = new WebSocket('ws://' + window.location.host + window.location.pathname);
+      ws.onopen    = function()  { show('Start to tail log...\n'); };
+      ws.onclose   = function()  { show('Log tail closed!\n'); }
+      ws.onmessage = function(m) { show(m.data); };
+
+      var sender = function(f){
+        var input     = document.getElementById('input');
+        input.onclick = function(){ input.value = "" };
+        f.onsubmit    = function(){
+          ws.send(input.value);
+          // input.value = "END";
+          return false;
+        }
+      }(document.getElementById('form'));
+    })();
+  }
+</script>

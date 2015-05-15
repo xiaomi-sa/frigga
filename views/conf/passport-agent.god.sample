@@ -1,0 +1,37 @@
+God.watch do |w|
+  w.name = "passport-agent"
+  w.start = "/home/work/opdir/passport/release/run.sh"
+  w.log = "/home/work/opdir/passport/release/run.log"
+  w.dir = "/home/work/opdir/passport/release"
+  w.env = {"PATH"=>"/home/work/jdk/bin/:/bin:/usr/bin:/sbin", "JAVA_HOME"=>"/home/work/jdk", "CLASSPATH"=>".:/home/work/jdk/lib/tools.jar:/home/work/jdk/lib/rt.jar"}
+  w.keepalive(
+    
+    
+  )
+  w.behavior(:clean_pid_file)
+  w.stop_timeout = 60.seconds
+  w.process_log = "/home/work/opdir/passport.yaml"
+
+  w.lifecycle do |on|
+    on.condition(:flapping) do |c|
+      c.to_state = [:start, :restart]
+      c.times = 3
+      c.within = 10.minute
+      c.transition = :unmonitored
+      c.retry_in = 20.minutes
+      c.retry_times = 2
+      c.retry_within = 1.hours
+      c.notify = 'proc_down'
+    end
+  end
+
+end
+
+God.contact(:email) do |c|
+  c.name = 'proc_down'
+  c.group = 'developers'
+  
+  c.to_email = "fangshaosen@xiaomi.com"
+  
+end
+

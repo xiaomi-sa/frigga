@@ -1,0 +1,13 @@
+---
+port: 9001
+
+white_list:
+  - 127.0.0.1
+  - 10.0.0.1
+
+ldap:
+  host: 10.0.0.1
+  port: 389
+  base: OU=xxx,DC=xxx,DC=net
+  username: user
+  password: pass

@@ -1,0 +1,8 @@
+#gem 'god', :git => 'git://github.com/WilburJ/god-xiaomi.git'
+gem 'god-xiaomi'
+gem 'rack-rpc'
+gem 'sinatra'
+gem 'thin'
+gem 'thor'
+gem 'file-tail'
+gem 'sinatra-websocket'

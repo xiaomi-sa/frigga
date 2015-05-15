@@ -1,0 +1,83 @@
+<table class="table table-bordered table-hover table-condensed">
+@ctstatus
+<!--   <thead> -->
+    <tr class="info">
+      <td><strong>Process</strong></td>
+      <td><strong>Status</strong></td>
+      <td><strong>Start Time</strong></td>
+      <td><strong>Action</strong></td>
+    </tr>
+<!--   </thead>
+  <tbody> -->
+    <% if @process.empty? %>
+      <tr>
+        <td>N/A</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    <% end %>
+    <% @process.each do |k, v| %>
+      <% next if k =~ /Frigga/i %>
+      <tr>
+      <td>
+        <a class="tip" target="_blank" href=<%= v[:http_url].nil? ? "#" : "http://#{v[:http_url]}" %> data-toggle="tooltip" data-placement="bottom" title="" data-original-title="<%= v[:start] %>"><%= k %></a>
+      </td>
+      <td>
+        <% if v[:status] == 'running' %>
+          <span class="label label-info"><%= v[:status] %></span></td>
+        <% else %>
+          <span class="label label-warning"><%= v[:status] %></span></td>
+        <% end %>
+      <td><%= v[:start_time] %></td>
+      <td>
+        <% if v[:status] == 'stop' %>
+          <form style="margin:0;display:inline;" action='/god/start' method='post'>
+          <input type="hidden" name="name" value='<%= k %>' >
+          <input class="btn btn-small btn-info" type="submit" value='start' >
+          </form>   
+        <% else %>
+          <form style="margin:0;display:inline;" action='/god/stop' method='post'>
+          <input type="hidden" name="name" value='<%= k %>' >
+          <input class="btn btn-small btn-danger" type="submit" value='stop' >
+          </form>   
+        <% end %>
+
+        <form style="margin:0;display:inline;" action='/god/restart' method='post'>
+        <input type="hidden" name="name" value='<%= k %>' >
+        <input class="btn btn-small btn-warning" type="submit" value='restart' >
+        </form>
+        
+        <div class="btn-group ">
+          <a class="btn dropdown-toggle btn-small btn-info" data-toggle="dropdown" href="#">
+            Log
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <!-- 下拉菜单 -->
+            <% v[:all_log].each do |k_log, v_log| %>         
+              <% next if v_log.nil? || v_log.eql?("/dev/null") %>
+              <% if v_log.kind_of?(Array) %>
+                <% v_log.each_with_index do |list, index| %>
+                  <li><a href=<%= "/log/#{k}/#{k_log}/#{index}" %> ><%= File.basename(list) %></li>
+                <% end %>
+              <% else %>
+                <li><a href=<%= "/log/#{k}/#{k_log}" %> ><%= File.basename(v_log) %></li>
+              <% end %>
+            <% end %>
+          </ul>
+        </div>
+        
+      </td>
+      <tr>
+    <% end %>
+<!--   </tbody> -->
+</table>
+
+<script type="text/javascript">
+$(function(){
+
+  $('.tip').tooltip("show").tooltip('toggle');
+})
+
+</script>
