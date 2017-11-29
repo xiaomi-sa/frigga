@@ -37,6 +37,7 @@ module Frigga
 
           start_time = ""
           status = v[:state] == :up ? 'running' : (v[:state] == :unmonitored ? 'stop' : 'something wrong!')
+          group_name =  v[:group] ? v[:group] : 'default'
           pid = v.fetch :pid, nil
           if v[:state] == :up
             if ! pid.nil? && File.exist?("/proc/#{pid}")
@@ -49,7 +50,10 @@ module Frigga
             end
               
           end
-          process[k] = {:status => status, 
+	  if !process[group_name]
+            process[group_name] = {}
+          end
+          process[group_name][k] = {:status => status, 
                         :start_time => start_time, 
                         :start => v[:start], 
                         :pid => pid, 

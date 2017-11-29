@@ -10,15 +10,15 @@
   <tbody> -->
     <tr>
     <td>
-      <a href="#" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="<%= @process['frigga'][:start] %>">Frigga</a>
+      <a href="#" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="<%= @process['default']['frigga'][:start] %>">Frigga</a>
     </td>
     <td>
-      <% if @process['frigga'][:status] == 'running' %>
-        <span class="label label-info"><%= @process['frigga'][:status] %></span></td>
+      <% if @process['default']['frigga'][:status] == 'running' %>
+        <span class="label label-info"><%= @process['default']['frigga'][:status] %></span></td>
       <% else %>
-        <span class="label label-warning"><%= @process['frigga'][:status] %></span></td>
+        <span class="label label-warning"><%= @process['default']['frigga'][:status] %></span></td>
       <% end %>
-    <td><%= @process['frigga'][:start_time] %></td>
+    <td><%= @process['default']['frigga'][:start_time] %></td>
     <tr>
 
 <!--   </tbody> -->
